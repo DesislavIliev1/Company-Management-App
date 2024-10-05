@@ -126,6 +126,21 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'company' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/company.log'),
+            'level' => 'debug',
+        ],
+        'employee' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/employee.log'),
+            'level' => 'debug',
+        ],
+        'task' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/task.log'),
+            'level' => 'debug',
+        ],
 
     ],
 
