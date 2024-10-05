@@ -10,7 +10,7 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('companies')
 ->name('company.')
-// ->middleware('auth:sanctum')
+->middleware('auth:sanctum')
 ->group(function () {
     Route::get('/', [CompanyController::class, 'index'])->name('api.index');
     Route::post('/create', [CompanyController::class, 'store'])->name('api.store');
