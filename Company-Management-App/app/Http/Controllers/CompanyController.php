@@ -36,8 +36,8 @@ class CompanyController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('public/logos');
-            $data['logo'] = Storage::url($data['logo']);
+            $path = $request->file('logo')->store('logos', 'public');
+            $data['logo'] = Storage::url($path);
         }
 
         try {

@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 const Company = () => {
-
   const [companies, setCompanies] = useState([]); // Ensure initial state is an empty array
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,11 +9,12 @@ const Company = () => {
     id: null,
     name: "",
     email: "",
-    logo: "",
+    logo: null, // Change logo to null initially for file input
     website: ""
   });
   const [isEditing, setIsEditing] = useState(false); // Flag to handle edit mode
   const [showForm, setShowForm] = useState(false); // Flag to toggle form visibility
+  const [logoPreview, setLogoPreview] = useState(null); // State to store the logo preview
 
   useEffect(() => {
     fetchCompanies();
@@ -25,24 +25,26 @@ const Company = () => {
   if (!token) {
     setError(new Error('No authentication token found'));
     setLoading(false);
-      return;
+    return;
   }
+
   const fetchCompanies = async () => {
     try {
-      const response = await axios.get("/api/companies",{
+      const response = await axios.get("/api/companies", {
         headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
+          Authorization: `Bearer ${token}`, // Include the token in the headers
         },
-
       });
       const result = response.data.companies?.data || [];
       setCompanies(result);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching companies", error);
+      setError(error); // Capture the error for rendering
+      setLoading(false);
     }
   };
-  
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -52,48 +54,67 @@ const Company = () => {
   }
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      const file = files[0]; // Get the first selected file
+      setFormData({
+        ...formData,
+        logo: file // Store the file in formData
+      });
+
+      // Create a preview URL for the image
+      const previewUrl = URL.createObjectURL(file);
+      setLogoPreview(previewUrl); // Set the preview URL
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
   };
 
   // Handle form submission for creating or updating a company
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isEditing) {
-      // Update company
-      try {
+    const formDataToSend = new FormData();
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('email', formData.email);
+    if (formData.logo) {
+      formDataToSend.append('logo', formData.logo); // Append logo file
+    }
+    formDataToSend.append('website', formData.website);
+
+    try {
+      if (isEditing) {
+        // Update company
         await axios.put(
           `/api/companies/edit/${formData.id}`,
-          formData,
+          formDataToSend,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the headers
+              'Content-Type': 'multipart/form-data', // Important for file uploads
+              Authorization: `Bearer ${token}`,
             },
           }
         );
         alert("Company updated successfully");
-      } catch (error) {
-        console.error("Error updating company", error);
-      }
-    } else {
-      // Create company
-      try {
+      } else {
+        // Create company
         await axios.post(
           "/api/companies/create",
-          formData,
+          formDataToSend,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the headers
+              'Content-Type': 'multipart/form-data', // Important for file uploads
+              Authorization: `Bearer ${token}`,
             },
           }
         );
         alert("Company created successfully");
-      } catch (error) {
-        console.error("Error creating company", error);
       }
+    } catch (error) {
+      console.error("Error processing request", error);
     }
 
     // Reset form and refresh the company list
@@ -101,9 +122,10 @@ const Company = () => {
       id: null,
       name: "",
       email: "",
-      logo: "",
+      logo: null,
       website: ""
     });
+    setLogoPreview(null); // Reset logo preview
     setShowForm(false);
     setIsEditing(false);
     fetchCompanies();
@@ -111,14 +133,14 @@ const Company = () => {
 
   // Handle company edit
   const handleEdit = (company) => {
-    console.log(company.id)
     setFormData({
       id: company.id,
       name: company.name || "", 
       email: company.email || "", 
-      logo: company.logo || "", 
+      logo: null, // Reset logo in case of edit
       website: company.website || "" 
     });  
+    setLogoPreview(company.logo || null); // Set logo preview if editing
     setIsEditing(true); // Set editing mode
     setShowForm(true); // Show the form
   };
@@ -127,9 +149,9 @@ const Company = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this company?")) {
       try {
-        await axios.delete(`/api/companies/delete/${id}`,{
+        await axios.delete(`/api/companies/delete/${id}`, {
           headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
+            Authorization: `Bearer ${token}`,
           },
         });
         alert("Company deleted successfully");
@@ -146,18 +168,18 @@ const Company = () => {
       id: null,
       name: "",
       email: "",
-      logo: "",
+      logo: null,
       website: ""
     });
+    setLogoPreview(null); // Reset logo preview
     setIsEditing(false); // Set to create mode
     setShowForm(true); // Show the form
   };
 
-
   return (
     <div className="wrapper">
-    <h1>Companies</h1>
-    <h1>Company Management</h1>
+      <h1>Companies</h1>
+      <h1>Company Management</h1>
       <button onClick={handleNewCompany}>Add New Company</button>
 
       {/* Form for creating/editing company */}
@@ -180,12 +202,18 @@ const Company = () => {
             required
           />
           <input
-            type="text"
+            type="file" // File input for logo
             name="logo"
-            placeholder="Company Logo URL"
-            value={formData.logo}
             onChange={handleChange}
+            accept="image/*" // Only accept image files
           />
+          {/* Preview the uploaded logo */}
+          {logoPreview && (
+            <div>
+              <h3>Logo Preview:</h3>
+              <img src={logoPreview} alt="Logo Preview" width="100" />
+            </div>
+          )}
           <input
             type="text"
             name="website"
@@ -194,10 +222,11 @@ const Company = () => {
             onChange={handleChange}
           />
           <button type="submit">{isEditing ? "Update" : "Create"} Company</button>
-          <button onClick={() => setShowForm(false)}>Cancel</button>
+          <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
         </form>
       )}
-    <ul>
+      
+      <ul>
         {companies.map((item, index) => (
           <li key={item.id || index}>
             <p><strong>Name:</strong> {item.name}</p>
@@ -209,8 +238,8 @@ const Company = () => {
           </li>
         ))}
       </ul>
-  </div>
-  )
+    </div>
+  );
 }
 
-export default Company
+export default Company;
