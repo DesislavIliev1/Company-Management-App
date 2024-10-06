@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Enums;
+ namespace App\Enums;
+ 
+ enum TaskStatus: string
+ {
+     case NEW = 'new';
+     case STARTED = 'started';
+     case DONE = 'done';
 
-enum TaskStatus : string
-{
-    case NEW = 'new';
-    case STARTED = 'started';
-    case DONE = 'done';
-}
+ }

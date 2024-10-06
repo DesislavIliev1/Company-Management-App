@@ -17,7 +17,10 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => 'Test',
+            'description' => 'Test description',
+            'employee_id' => 2,
+            'status' => 'new',
         ];
     }
 }

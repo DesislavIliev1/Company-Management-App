@@ -3,25 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Services\TaskService;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
+    protected $taskService;
+
+    public function __construct(TaskService $taskService)
+    {
+       $this->taskService = $taskService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $perPage = 10; // Default to 10 items per page
+        $tasks = $this->taskService->read($perPage);
+        return response()->json(['tasks' => $tasks], 200);
     }
 
     /**
@@ -29,38 +33,44 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        //
+        $data = $request->validated();
+        try {
+            $task = $this->taskService->create($data);
+            return response()->json(['task' => $task, 'message' => 'Task created successfully.'], 201);
+        } catch (Exception $e) {
+            Log::channel('task')->info('Error creating task: ' . $e->getMessage());
+            return response()->json(['error' => 'Error creating task.'], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        //
-    }
-
+   
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(UpdateTaskRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+
+        try {
+            $task = $this->taskService->edit($id, $data);
+            return response()->json(['task' => $task, 'message' => 'Task updated successfully.'], 200);
+        } catch (Exception $e) {
+            Log::channel('task')->info('Error updating task: ' . $e->getMessage());
+            return response()->json(['error' => 'Error updating task.'], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy($id)
     {
-        //
+        try {
+            $this->taskService->delete($id);
+            return response()->json(['message' => 'Task deleted successfully.'], 200);
+        } catch (Exception $e) {
+            Log::channel('task')->info('Error deleting task: ' . $e->getMessage());
+            return response()->json(['error' => 'Error deleting task.'], 500);
+        }
     }
 }

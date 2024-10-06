@@ -44,7 +44,7 @@ class CompanyController extends Controller
             $company = $this->companyService->create($data);
             return response()->json(['company' => $company, 'message' => 'Company created successfully.'], 201);
         } catch (Exception $e) {
-            Log::error('Error creating company: ' . $e->getMessage());
+            Log::channel(channel: 'company')->info('Error creating company: ' . $e->getMessage());
             return response()->json(['error' => 'Error creating company.'], 500);
         }
     }
@@ -67,7 +67,7 @@ class CompanyController extends Controller
             $company = $this->companyService->edit($id, $data);
             return response()->json(['company' => $company, 'message' => 'Company updated successfully.'], 200);
         } catch (Exception $e) {
-            Log::error('Error updating company: ' . $e->getMessage());
+            Log::channel(channel: 'company')->info('Error updating company: ' . $e->getMessage());
             return response()->json(['error' => 'Error updating company.'], 500);
         }
     }
@@ -81,7 +81,7 @@ class CompanyController extends Controller
             $this->companyService->delete($id);
             return response()->json(['message' => 'Company deleted successfully.'], 200);
         } catch (Exception $e) {
-            Log::error('Error deleting company: ' . $e->getMessage());
+            Log::channel(channel: 'company')->info('Error deleting company: ' . $e->getMessage());
             return response()->json(['error' => 'Error deleting company.'], 500);
         }
     }

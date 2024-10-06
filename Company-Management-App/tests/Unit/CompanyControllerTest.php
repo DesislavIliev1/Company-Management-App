@@ -26,7 +26,7 @@ class CompanyControllerTest extends TestCase
         $this->assertTrue(true);
     }
 
-      /** @test */
+    /** @test */
       public function user_can_create_a_company()
       {
         Storage::fake('public');

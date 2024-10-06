@@ -17,7 +17,11 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'first_name' => 'Mark',
+            'last_name' => 'Tom',
+            'company_id' => 2,
+            'email' => 'email@abv.bg',
+            'phone' => '1234567890',
         ];
     }
 }
