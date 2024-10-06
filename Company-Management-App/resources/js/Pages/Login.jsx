@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const login =({ setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
@@ -28,7 +28,7 @@ const login =({ setIsAuthenticated }) => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.access_token);
         setIsAuthenticated(true);
         navigate('/');
       } else {
@@ -82,6 +82,7 @@ const login =({ setIsAuthenticated }) => {
           >
             Login
           </button>
+          <Link to="/register">Register</Link>
         </form>
       </div>
     </div>

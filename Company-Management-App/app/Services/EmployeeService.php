@@ -13,9 +13,8 @@ class EmployeeService
         return $employee;
     }
     public function read($perPage = 10){
-       
-        $employees = Employee::select('first_name', 'email', 'phone')->paginate($perPage);
-        return $employees;
+
+        return Employee::with('company', 'tasks')->paginate($perPage);
     }
 
 

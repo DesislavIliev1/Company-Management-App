@@ -12,8 +12,7 @@ class TaskService
     }
     public function read($perPage = 10){
        
-        $tasks = Task::select('name', 'description', 'status')->paginate($perPage);
-        return $tasks;
+        return Task::with( 'employee')->paginate($perPage);
     }
 
 

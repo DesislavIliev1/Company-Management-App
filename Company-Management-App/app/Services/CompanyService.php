@@ -20,7 +20,7 @@ class CompanyService
     }
     public function read($perPage = 10){
        
-        $companies = Company::select('name', 'logo', 'website')->paginate($perPage);
+        $companies = Company::select('id','name','email', 'logo', 'website')->paginate($perPage);
         return $companies;
     }
 

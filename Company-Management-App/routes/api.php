@@ -48,7 +48,4 @@ Route::prefix('task')
     Route::delete('/delete/{id}', [TaskController::class, 'destroy'])->name('api.delete');
 });
 
-// Route::middleware('auth:sanctum')->get('/auth/verify', function (Request $request) {
-//     return response()->json(['isAuthenticated' => true]);
-//  });
 Route::middleware('auth:sanctum')->get('/auth/verify', [AuthController::class, 'verify']);
