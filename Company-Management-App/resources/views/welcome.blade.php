@@ -6,7 +6,7 @@
 
         <title>Laravel</title>
         @viteReactRefresh
-        @vite('resources/js/app.jsx')
+        @vite('resources/js/app.jsx' , 'resources/css/app.css')
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

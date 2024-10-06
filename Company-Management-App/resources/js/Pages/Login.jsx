@@ -1,0 +1,91 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const login =({ setIsAuthenticated }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (password !== passwordConfirmation) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, password_confirmation: passwordConfirmation }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        setIsAuthenticated(true);
+        navigate('/');
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || 'Login failed');
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+    }
+  };
+
+  return (
+    <div className="login-page-wrapper">
+      <div className="form-wrapper">
+        <h1 className="loggin-title">Login</h1>
+        <form onSubmit={handleLogin} className="loggin-form">
+          <div className="input-wrapper"> 
+            <label className="block text-gray-700">Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className=""
+            />
+          </div>
+          <div className="input-wrapper">
+            <label className="block text-gray-700">Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className=""
+            />
+          </div>
+          <div className="input-wrapper">
+            <label className="block text-gray-700">Confirm Password:</label>
+            <input
+              type="password"
+              value={passwordConfirmation}
+              onChange={(e) => setPasswordConfirmation(e.target.value)}
+              required
+              className=""
+            />
+          </div>
+          {error && <p className="text-red-500">{error}</p>}
+          <button
+            type="submit"
+            className="login-btn"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default login

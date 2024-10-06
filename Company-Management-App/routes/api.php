@@ -47,3 +47,8 @@ Route::prefix('task')
     Route::put('/edit/{id}', [TaskController::class, 'update'])->name('api.update');
     Route::delete('/delete/{id}', [TaskController::class, 'destroy'])->name('api.delete');
 });
+
+// Route::middleware('auth:sanctum')->get('/auth/verify', function (Request $request) {
+//     return response()->json(['isAuthenticated' => true]);
+//  });
+Route::middleware('auth:sanctum')->get('/auth/verify', [AuthController::class, 'verify']);

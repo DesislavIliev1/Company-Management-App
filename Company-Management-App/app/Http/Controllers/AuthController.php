@@ -8,6 +8,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -46,5 +47,20 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out successfully']);
+    }
+
+
+    public function verify(Request $request)
+    {
+        try {
+            $user = Auth::guard('sanctum')->user();
+            if ($user) {
+                return response()->json(['isAuthenticated' => true], 200);
+            } else {
+                return response()->json(['isAuthenticated' => false], 401);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Server Error'], 500);
+        }
     }
 }
