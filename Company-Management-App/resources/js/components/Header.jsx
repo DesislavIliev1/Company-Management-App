@@ -5,9 +5,18 @@ const header = () => {
 
   const isAuthRoute = location.pathname === '/login' || location.pathname === '/register';
   const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login'); 
+  const handleLogout = async () => {
+    try {
+      await axios.post('/api/logout', {}, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      localStorage.removeItem('token');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   };
   return (
     <header>
