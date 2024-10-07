@@ -14,6 +14,7 @@ Route::get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register'])->name('api.registes');
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('api.logout');
+Route::middleware('auth:sanctum')->get('/auth/verify', [AuthController::class, 'verify']);
 
 Route::prefix('companies')
 ->name('company.')
@@ -47,5 +48,3 @@ Route::prefix('task')
     Route::put('/edit/{id}', [TaskController::class, 'update'])->name('api.update');
     Route::delete('/delete/{id}', [TaskController::class, 'destroy'])->name('api.delete');
 });
-
-Route::middleware('auth:sanctum')->get('/auth/verify', [AuthController::class, 'verify']);

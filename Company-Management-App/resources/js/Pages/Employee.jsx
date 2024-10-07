@@ -110,11 +110,15 @@ const Employee = () => {
 
   return (
     <div className="wrapper">
-      <h1>Employee Management</h1>
-      <button onClick={() => setShowForm(true)}>Add Employee</button>
+      <div className="title-wrapper">
+        <h1>Employee Management</h1>
+        <button className="btn-green" onClick={() => setShowForm(true)}>Add Employee</button>
+
+      </div>
       
       {showForm && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="form-wrapper">
+          <h1>Create/Edit</h1>
           <input
             type="text"
             placeholder="First Name"
@@ -129,18 +133,6 @@ const Employee = () => {
             onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
             required
           />
-          <select
-            value={formData.company_id}
-            onChange={(e) => setFormData({ ...formData, company_id: e.target.value })}
-            required
-          >
-            <option value="">Select Company</option>
-            {companies.map(company => (
-              <option key={company.id} value={company.id}>
-                {company.name}
-              </option>
-            ))}
-          </select>
           <input
             type="email"
             placeholder="Email"
@@ -155,18 +147,37 @@ const Employee = () => {
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             required
           />
-          <button type="submit">{isEditing ? 'Update' : 'Create'}</button>
-          <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
+          <select 
+            value={formData.company_id}
+            onChange={(e) => setFormData({ ...formData, company_id: e.target.value })}
+            required
+          >
+            <option value="">Select Company</option>
+            {companies.map(company => (
+              <option key={company.id} value={company.id}>
+                {company.name}
+              </option>
+            ))}
+          </select>
+          <div className="form-btn-wrapper">
+            <button className="btn-green" type="submit">{isEditing ? 'Update' : 'Create'}</button>
+            <button className="btn-red" type="button" onClick={() => setShowForm(false)}>Cancel</button>
+
+          </div>
         </form>
       )}
 
       <ul>
         {employees.map((employee) => (
-          <li key={employee.id}>
-            <p><strong>First Name:</strong> {employee.first_name}</p>
-            <p><strong>Last Name:</strong> {employee.last_name}</p>
-            <p><strong>Email:</strong> {employee.email}</p>
-            <p><strong>Phone:</strong> {employee.phone}</p>
+          <li key={employee.id} className="card-wrapper">
+            <div className="card-container">
+              <p><strong>First Name:</strong> {employee.first_name}</p>
+              <p><strong>Last Name:</strong> {employee.last_name}</p>
+            </div>
+            <div className="card-container">
+              <p><strong>Email:</strong> {employee.email}</p>
+              <p><strong>Phone:</strong> {employee.phone}</p>
+            </div>
             <p><strong>Company:</strong> {employee.company?.name}</p> 
             
             <strong>Tasks:</strong>
@@ -175,9 +186,11 @@ const Employee = () => {
                 <li key={task.id}>{task.name}</li> 
               ))}
             </ul>
-            
-            <button onClick={() => handleEdit(employee)}>Edit</button>
-            <button onClick={() => handleDelete(employee.id)}>Delete</button>
+            <div className="card-container">
+              <button className="btn-green" onClick={() => handleEdit(employee)}>Edit</button>
+              <button className="btn-red" onClick={() => handleDelete(employee.id)}>Delete</button>
+
+            </div>
           </li>
         ))}
       </ul>

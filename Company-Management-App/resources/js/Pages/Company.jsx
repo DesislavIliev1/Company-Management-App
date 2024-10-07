@@ -178,13 +178,15 @@ const Company = () => {
 
   return (
     <div className="wrapper">
-      <h1>Companies</h1>
-      <h1>Company Management</h1>
-      <button onClick={handleNewCompany}>Add New Company</button>
+      <div className="title-wrapper">
+        <h1>Company Management</h1>
+        <button className="btn-green" onClick={handleNewCompany}>Add New Company</button>
+      </div>
 
       {/* Form for creating/editing company */}
       {showForm && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="form-wrapper">
+          <h1>Create/Edit</h1>
           <input
             type="text"
             name="name"
@@ -221,20 +223,29 @@ const Company = () => {
             value={formData.website}
             onChange={handleChange}
           />
-          <button type="submit">{isEditing ? "Update" : "Create"} Company</button>
-          <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
+          <div className="form-btn-wrapper">
+            <button type="submit" className="btn-green">{isEditing ? "Update" : "Create"} Company</button>
+            <button type="button"  className="btn-red" onClick={() => setShowForm(false)}>Cancel</button>
+
+          </div>
         </form>
       )}
       
       <ul>
         {companies.map((item, index) => (
-          <li key={item.id || index}>
-            <p><strong>Name:</strong> {item.name}</p>
-            <p><strong>Email:</strong> {item.email}</p>
+          <li key={item.id || index} className="card-wrapper">
             <p><strong>Logo:</strong> <img src={item.logo} alt={`${item.name} logo`} width="50" /></p>
+            <div className="card-container">
+              <p><strong>Name:</strong> {item.name}</p>
+              <p><strong>Email:</strong> {item.email}</p>
+
+            </div>
             <p><strong>Website:</strong> <a href={item.website} target="_blank" rel="noopener noreferrer">{item.website}</a></p>
-            <button onClick={() => handleEdit(item)}>Edit</button> 
-            <button onClick={() => handleDelete(item.id)}>Delete</button> 
+            <div className="card-container">
+              <button className="btn-green" onClick={() => handleEdit(item)}>Edit</button> 
+              <button className="btn-red" onClick={() => handleDelete(item.id)}>Delete</button> 
+
+            </div>
           </li>
         ))}
       </ul>

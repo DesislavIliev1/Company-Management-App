@@ -25,7 +25,6 @@ const Task = () => {
       }); // Adjust based on your endpoint
       const result = response.data.tasks?.data || [];
       setTasks(result);
-      console.log(result);
     } catch (error) {
       console.error('Error fetching tasks', error);
     }
@@ -110,11 +109,14 @@ const Task = () => {
 
   return (
     <div className="wrapper">
-      <h1>Task Management</h1>
-      <button onClick={() => setShowForm(true)}>Add Task</button>
+      <div className="title-wrapper">
+        <h1>Task Management</h1>
+        <button className="btn-green" onClick={() => setShowForm(true)}>Add Task</button>
+
+      </div>
       
       {showForm && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="form-wrapper">
           <input
             type="text"
             placeholder="Task Name"
@@ -149,20 +151,25 @@ const Task = () => {
             <option value="started">Started</option>
             <option value="new">New</option>
           </select>
-          <button type="submit">{isEditing ? 'Update' : 'Create'}</button>
-          <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
+          <div className="form-btn-wrapper">
+            <button className="btn-green" type="submit">{isEditing ? 'Update' : 'Create'}</button>
+            <button className="btn-red" type="button" onClick={() => setShowForm(false)}>Cancel</button>
+          </div>
         </form>
       )}
 
       <ul>
         {tasks.map((task) => (
-          <li key={task.id}>
+          <li key={task.id} className="card-wrapper">
             <p><strong>Name:</strong> {task.name}</p>
             <p><strong>Description:</strong> {task.description}</p>
             <p><strong>Assigned Employee:</strong> {task.employee?.first_name} {task.employee?.last_name}</p>
             <p><strong>Status:</strong> {task.status}</p>
-            <button onClick={() => handleEdit(task)}>Edit</button>
-            <button onClick={() => handleDelete(task.id)}>Delete</button>
+            <div className="card-container">
+              <button className="btn-green" onClick={() => handleEdit(task)}>Edit</button>
+              <button className="btn-red" onClick={() => handleDelete(task.id)}>Delete</button>
+
+            </div>
           </li>
         ))}
       </ul>

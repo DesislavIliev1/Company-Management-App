@@ -4,7 +4,6 @@ import { useNavigate, Link } from 'react-router-dom';
 const login =({ setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -12,18 +11,13 @@ const login =({ setIsAuthenticated }) => {
     e.preventDefault();
     setError('');
 
-    if (password !== passwordConfirmation) {
-      setError('Passwords do not match');
-      return;
-    }
-
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, password_confirmation: passwordConfirmation }),
+        body: JSON.stringify({ email, password,  }),
       });
 
       if (response.ok) {
@@ -61,16 +55,6 @@ const login =({ setIsAuthenticated }) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              className=""
-            />
-          </div>
-          <div className="input-wrapper">
-            <label className="block text-gray-700">Confirm Password:</label>
-            <input
-              type="password"
-              value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
               required
               className=""
             />

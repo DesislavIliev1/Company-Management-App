@@ -45,7 +45,7 @@ const App = () => {
         setIsAuthenticated(false);
       }
 
-      setLoading(false); // Set loading to false after the check completes
+      setLoading(false);
     };
 
     checkAuthStatus();
