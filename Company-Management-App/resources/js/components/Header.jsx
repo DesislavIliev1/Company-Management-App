@@ -1,17 +1,18 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
-const header = () => {
+const header = ({ setIsAuthenticated }) => {
 
   const isAuthRoute = location.pathname === '/login' || location.pathname === '/register';
   const navigate = useNavigate();
-  const handleLogout = async () => {
+   const handleLogout = async () => {
     try {
       await axios.post('/api/logout', {}, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
+      setIsAuthenticated(false);
       localStorage.removeItem('token');
       navigate('/login');
     } catch (error) {

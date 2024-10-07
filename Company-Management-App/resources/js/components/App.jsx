@@ -58,7 +58,7 @@ const App = () => {
     
     return (
       <div>
-         <Header/>
+         <Header setIsAuthenticated={setIsAuthenticated}/>
         <Routes>
           <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/register" element={<Register />} />
