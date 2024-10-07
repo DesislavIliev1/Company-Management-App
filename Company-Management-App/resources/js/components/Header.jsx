@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
-const header = ( isAuthenticated) => {
+const header = () => {
 
+  const isAuthRoute = location.pathname === '/login' || location.pathname === '/register';
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -23,11 +24,11 @@ const header = ( isAuthenticated) => {
           </li>
         </ul>
         <div  className="right-side">
-          {isAuthenticated ? (
-                <button onClick={handleLogout}>Logout</button>
-            ) : (
+          {isAuthRoute ? (
             <Link to="/login">Login</Link>
-
+          ) : (
+            
+            <button onClick={handleLogout}>Logout</button>
             )}
         </div>
       </nav>

@@ -13,12 +13,20 @@ class CompanyController extends Controller
 {
     protected $companyService;
 
+    /**
+     * CompanyController constructor.
+     *
+     * @param \App\Services\CompanyService $companyService The service to handle company operations.
+     */
     public function __construct(CompanyService $companyService)
     {
        $this->companyService = $companyService;
     }
-    /**
+
+     /**
      * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse The response containing the list of companies.
      */
     public function index()
     {
@@ -30,6 +38,9 @@ class CompanyController extends Controller
     
     /**
      * Store a newly created resource in storage.
+     *
+     * @param \App\Http\Requests\Company\StoreCompanyRequest $request The request containing the company data.
+     * @return \Illuminate\Http\JsonResponse The response indicating the creation status.
      */
     public function store(StoreCompanyRequest $request)
     {
@@ -50,9 +61,12 @@ class CompanyController extends Controller
     }
 
    
-
     /**
      * Update the specified resource in storage.
+     *
+     * @param \App\Http\Requests\Company\UpdateCompanyRequest $request The request containing the updated company data.
+     * @param int $id The ID of the company to update.
+     * @return \Illuminate\Http\JsonResponse The response indicating the update status.
      */
     public function update(UpdateCompanyRequest $request, $id)
     {
@@ -74,6 +88,9 @@ class CompanyController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param int $id The ID of the company to delete.
+     * @return \Illuminate\Http\JsonResponse The response indicating the deletion status.
      */
     public function destroy($id)
     {

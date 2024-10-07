@@ -25,7 +25,7 @@ class UpdateCompanyRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'logo' => 'nullable|image|dimensions:min_width=100,min_height=100',
-            'nullable|regex:/^(https?:\/\/)?([a-z0-9]+[.])+[a-z]{2,}/i|max:255'
+            'website' => 'nullable|regex:/^(https?:\/\/)?([a-z0-9]+[.])+[a-z]{2,}/i|max:255'
         ];
     }
 }

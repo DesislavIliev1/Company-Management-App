@@ -13,13 +13,20 @@ class TaskController extends Controller
 {
     protected $taskService;
 
+    /**
+     * TaskController constructor.
+     *
+     * @param \App\Services\TaskService $taskService The service to handle task operations.
+     */
     public function __construct(TaskService $taskService)
     {
        $this->taskService = $taskService;
     }
 
-    /**
+   /**
      * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse The response containing the list of tasks.
      */
     public function index()
     {
@@ -28,8 +35,11 @@ class TaskController extends Controller
         return response()->json(['tasks' => $tasks], 200);
     }
 
-    /**
+     /**
      * Store a newly created resource in storage.
+     *
+     * @param \App\Http\Requests\Task\StoreTaskRequest $request The request containing the task data.
+     * @return \Illuminate\Http\JsonResponse The response indicating the creation status.
      */
     public function store(StoreTaskRequest $request)
     {
@@ -46,6 +56,10 @@ class TaskController extends Controller
    
     /**
      * Update the specified resource in storage.
+     *
+     * @param \App\Http\Requests\Task\UpdateTaskRequest $request The request containing the updated task data.
+     * @param int $id The ID of the task to update.
+     * @return \Illuminate\Http\JsonResponse The response indicating the update status.
      */
     public function update(UpdateTaskRequest $request, $id)
     {
@@ -60,8 +74,11 @@ class TaskController extends Controller
         }
     }
 
-    /**
+     /**
      * Remove the specified resource from storage.
+     *
+     * @param int $id The ID of the task to delete.
+     * @return \Illuminate\Http\JsonResponse The response indicating the deletion status.
      */
     public function destroy($id)
     {

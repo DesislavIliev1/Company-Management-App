@@ -24,7 +24,7 @@ const login =({ setIsAuthenticated }) => {
         const data = await response.json();
         localStorage.setItem('token', data.access_token);
         setIsAuthenticated(true);
-        navigate('/');
+        navigate('/company');
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Login failed');

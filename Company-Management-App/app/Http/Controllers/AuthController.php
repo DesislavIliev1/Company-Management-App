@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+     /**
+     * Register a new user.
+     *
+     * @param \App\Http\Requests\RegisterRequest $request The request containing the registration data.
+     * @return \Illuminate\Http\JsonResponse The response indicating the registration status.
+     */
     public function register(RegisterRequest $request)
     {
         $request->validated();
@@ -25,6 +31,13 @@ class AuthController extends Controller
         return response()->json(['message' => 'User registered successfully'], 201);
     }
 
+     /**
+     * Log in a user and issue an access token.
+     *
+     * @param \App\Http\Requests\LoginRequest $request The request containing the login data.
+     * @return \Illuminate\Http\JsonResponse The response containing the access token.
+     * @throws \Illuminate\Validation\ValidationException If the provided credentials are incorrect.
+     */
     public function login(LoginRequest $request)
     {
         $request->validated();
@@ -42,6 +55,12 @@ class AuthController extends Controller
         return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
     }
 
+    /**
+     * Log out the authenticated user.
+     *
+     * @param \Illuminate\Http\Request $request The request containing the logout data.
+     * @return \Illuminate\Http\JsonResponse The response indicating the logout status.
+     */
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -49,7 +68,12 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out successfully']);
     }
 
-
+    /**
+     * Verify if the user is authenticated.
+     *
+     * @param \Illuminate\Http\Request $request The request containing the verification data.
+     * @return \Illuminate\Http\JsonResponse The response indicating the authentication status.
+     */
     public function verify(Request $request)
     {
         try {

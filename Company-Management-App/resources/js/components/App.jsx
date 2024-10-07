@@ -58,15 +58,14 @@ const App = () => {
     
     return (
       <div>
-         <Header isAuthenticated={isAuthenticated} />
+         <Header/>
         <Routes>
-          <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
           <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/company" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={Company} />} />
           <Route path="/employee" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={Employee} />} />
           <Route path="/tasks" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={Task} />} />
-          <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} />} />
+          <Route path="*" element={<Navigate to={isAuthenticated ? "/company" : "/login"} />} />
         </Routes>
       </div>
     );

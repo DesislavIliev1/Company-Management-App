@@ -9,12 +9,12 @@ const Company = () => {
     id: null,
     name: "",
     email: "",
-    logo: null, // Change logo to null initially for file input
+    logo: null, 
     website: ""
   });
-  const [isEditing, setIsEditing] = useState(false); // Flag to handle edit mode
-  const [showForm, setShowForm] = useState(false); // Flag to toggle form visibility
-  const [logoPreview, setLogoPreview] = useState(null); // State to store the logo preview
+  const [isEditing, setIsEditing] = useState(false); 
+  const [showForm, setShowForm] = useState(false); 
+  const [logoPreview, setLogoPreview] = useState(null); 
 
   useEffect(() => {
     fetchCompanies();
@@ -40,7 +40,7 @@ const Company = () => {
       setLoading(false);
     } catch (error) {
       console.error("Error fetching companies", error);
-      setError(error); // Capture the error for rendering
+      setError(error); 
       setLoading(false);
     }
   };
@@ -56,10 +56,10 @@ const Company = () => {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
-      const file = files[0]; // Get the first selected file
+      const file = files[0]; 
       setFormData({
         ...formData,
-        logo: file // Store the file in formData
+        logo: file 
       });
 
       // Create a preview URL for the image
@@ -88,12 +88,12 @@ const Company = () => {
     try {
       if (isEditing) {
         // Update company
-        await axios.put(
+        await axios.post(
           `/api/companies/edit/${formData.id}`,
           formDataToSend,
           {
             headers: {
-              'Content-Type': 'multipart/form-data', // Important for file uploads
+              'Content-Type': 'multipart/form-data', 
               Authorization: `Bearer ${token}`,
             },
           }
@@ -106,7 +106,7 @@ const Company = () => {
           formDataToSend,
           {
             headers: {
-              'Content-Type': 'multipart/form-data', // Important for file uploads
+              'Content-Type': 'multipart/form-data', 
               Authorization: `Bearer ${token}`,
             },
           }
@@ -155,7 +155,7 @@ const Company = () => {
           },
         });
         alert("Company deleted successfully");
-        fetchCompanies(); // Refresh the company list
+        fetchCompanies(); 
       } catch (error) {
         console.error("Error deleting company", error);
       }
@@ -171,9 +171,9 @@ const Company = () => {
       logo: null,
       website: ""
     });
-    setLogoPreview(null); // Reset logo preview
-    setIsEditing(false); // Set to create mode
-    setShowForm(true); // Show the form
+    setLogoPreview(null); 
+    setIsEditing(false); 
+    setShowForm(true); 
   };
 
   return (

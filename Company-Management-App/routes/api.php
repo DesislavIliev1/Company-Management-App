@@ -23,7 +23,7 @@ Route::prefix('companies')
     Route::get('/', [CompanyController::class, 'index'])->name('api.index');
     Route::post('/create', [CompanyController::class, 'store'])->name('api.store');
     Route::get('/{id}', [CompanyController::class, 'show'])->name('api.show');
-    Route::put('/edit/{id}', [CompanyController::class, 'update'])->name('api.update');
+    Route::post('/edit/{id}', [CompanyController::class, 'update'])->name('api.update');
     Route::delete('/delete/{id}', [CompanyController::class, 'destroy'])->name('api.delete');
 });
 

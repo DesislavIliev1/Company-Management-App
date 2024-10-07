@@ -15,9 +15,6 @@ class Task extends Model
         'employee_id',
         'status'
     ];
-    // protected $casts = [
-    //     'status' => TaskStatus::class, 
-    // ];
 
     public function employee()
     {

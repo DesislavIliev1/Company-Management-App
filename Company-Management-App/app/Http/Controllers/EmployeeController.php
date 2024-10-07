@@ -13,6 +13,11 @@ class EmployeeController extends Controller
 
     protected $employeeService;
 
+    /**
+     * EmployeeController constructor.
+     *
+     * @param \App\Services\EmployeeService $employeeService The service to handle employee operations.
+     */
     public function __construct(EmployeeService $employeeService)
     {
        $this->employeeService = $employeeService;
@@ -20,6 +25,8 @@ class EmployeeController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse The response containing the list of employees.
      */
     public function index()
     {
@@ -30,6 +37,9 @@ class EmployeeController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param \App\Http\Requests\Employeee\StoreEmployeeRequest $request The request containing the employee data.
+     * @return \Illuminate\Http\JsonResponse The response indicating the creation status.
      */
     public function store(StoreEmployeeRequest $request)
     {
@@ -45,6 +55,10 @@ class EmployeeController extends Controller
     
     /**
      * Update the specified resource in storage.
+     *
+     * @param \App\Http\Requests\Employee\UpdateEmployeeRequest $request The request containing the updated employee data.
+     * @param int $id The ID of the employee to update.
+     * @return \Illuminate\Http\JsonResponse The response indicating the update status.
      */
     public function update(UpdateEmployeeRequest $request, $id)
     {
@@ -59,8 +73,11 @@ class EmployeeController extends Controller
         }
     }
 
-    /**
+     /**
      * Remove the specified resource from storage.
+     *
+     * @param int $id The ID of the employee to delete.
+     * @return \Illuminate\Http\JsonResponse The response indicating the deletion status.
      */
     public function destroy($id)
     {
